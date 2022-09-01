@@ -32,6 +32,8 @@ func main() {
 		fmt.Println("error:", err2)
 	}
 	fmt.Println("json:", abc)
+
+	//对象转json
 	p := proper{Name: "张三", Age: 15, Height: 19.8}
 	fmt.Println(p)
 	res2, err3 := json.MarshalIndent(p, "", " ")
