@@ -2,12 +2,23 @@ package main
 
 import "fmt"
 
-func name(s *string) {
-	fmt.Println("666", *s)
+type Proper struct {
+	Name string
+	Data map[interface{}]interface{}
+}
+
+func NewProper() *Proper {
+	return &Proper{
+		Name: "张三",
+		Data: make(map[interface{}]interface{}),
+	}
 }
 
 func main() {
-	s := "woshishei"
-	fmt.Print(&s)
-	name(&s)
+
+	a := NewProper()
+	b := NewProper()
+	a.Data['a'] = 'a'
+	fmt.Print(b.Name)
+
 }
