@@ -18,7 +18,11 @@ func main() {
 
 	a := NewProper()
 	b := NewProper()
+	fmt.Println(a == b)
+	fmt.Println(a, b)
 	a.Data['a'] = 'a'
-	fmt.Print(b.Name)
+	a.Name = "李四"
+	fmt.Println(b.Data)
+	fmt.Println(b.Name)
 
 }
