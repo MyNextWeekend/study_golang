@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -23,20 +24,37 @@ func FileToBytes(filePath string, size int) (res [][]byte) {
 }
 
 func test() {
-	readFile, err := os.ReadFile("./test_io/main.go")
-	if err == nil {
-		fmt.Println("文件的长度是：", len(readFile))
-		fmt.Println(len(string(readFile)))
-		fmt.Println(string(readFile[0:150]))
-		//for i, b := range readFile {
-		//	fmt.Println("index:", i, "bin:", b)
-		//}
-	} else {
+	readFile, err := os.Open("./test_io/main.go")
+	if err != nil {
 		fmt.Print("异常了呀：", err)
 	}
+	buf := make([]byte, 1024)
+	n, err := readFile.Read(buf)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(n)
+	fmt.Println(len(buf))
+}
+
+func test02() (res [][]byte) {
+	readFile, err := os.Open("./test_io/main.go")
+	if err != nil {
+		fmt.Print("异常了呀：", err)
+	}
+	for {
+		buf := make([]byte, 10)
+		n, err := readFile.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		res = append(res, buf[:n])
+	}
+	return
 }
 
 func main() {
-	bytes := FileToBytes("./test_io/main.go", 3200)
-	fmt.Println(bytes)
+	//bytes := FileToBytes("./test_io/main.go", 3200)
+	//fmt.Println(bytes)
+	test02()
 }

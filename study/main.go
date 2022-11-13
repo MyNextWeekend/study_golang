@@ -3,11 +3,13 @@ package main
 import "fmt"
 
 func main() {
-	c := make([][]int, 0)
-	a := []int{1, 2, 3}
-	c = append(c, a)
-	fmt.Println(c)
-	a = append(a, 888)
-	c = append(c, a)
-	fmt.Println(c)
+	var c []int
+	c = append(c, 1)
+	fmt.Printf("地址是：%p\n", c)
+	c = append(c, 1)
+	fmt.Printf("地址是：%p\n", c)
+	c = append(c, 1)
+	fmt.Printf("地址是：%p\n", c)
+	c = append(c, 1)
+	fmt.Printf("地址是：%p\n", c)
 }
