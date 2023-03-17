@@ -1,6 +1,5 @@
 package main
 
-//
 //import "fmt"
 //
 //func aa(m *[]int) {
