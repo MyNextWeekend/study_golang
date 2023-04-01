@@ -8,18 +8,21 @@ type student struct {
 }
 
 func main() {
+	var a *student
+	fmt.Print(a)
+
 	//make 返回类型的引用而不是指针
-	a := make([]int, 5)
+	//a := make([]int, 5)
 	//new 分配零值内存，返回指针
 	//a := new([]int)
 
-	fmt.Printf("%T", a)
-	fmt.Println("")
-	fmt.Println(a)
-	c := new(student)
-	fmt.Println(c == nil)
-	c.age = a
-	fmt.Println(c)
+	//fmt.Printf("%T", a)
+	//fmt.Println("")
+	//fmt.Println(a)
+	//c := new(student)
+	//fmt.Println(c == nil)
+	//c.age = a
+	//fmt.Println(c)
 
 	//未显示初始化的对象，自动初始化了
 	//var abc student
