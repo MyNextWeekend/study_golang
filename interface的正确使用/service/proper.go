@@ -15,6 +15,9 @@ type clientProxy interface {
 }
 
 type CourseService struct {
+	//struct嵌套是为了代码易读，不需要下放到方法中new这个对象
+	//嵌套的结构体生命周期与对象保持一致
+	//此处申明的接口类型，主要满足这个接口的读写均可以被赋值
 	CourseClient clientProxy
 }
 
