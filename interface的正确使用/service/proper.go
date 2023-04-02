@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"study_golang/shishi/client"
+	"study_golang/interface的正确使用/client"
 )
 
 /*
