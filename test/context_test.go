@@ -1,8 +1,9 @@
-package main
+package test
 
 import (
 	"context"
 	"fmt"
+	"testing"
 	"time"
 )
 
@@ -26,13 +27,13 @@ func work(ctx context.Context) {
 		}
 	}
 }
-
-func main() {
+func TestContext(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
+	//defer cancelFunc()
 	go work(ctx)
 	time.Sleep(6 * time.Second)
-	fmt.Print("主动结束操作")
 	cancelFunc()
+	fmt.Print("主动结束操作")
 	time.Sleep(10 * time.Second)
 	fmt.Print("done")
 }

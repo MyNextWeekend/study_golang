@@ -1,15 +1,16 @@
-package main
+package test
 
 import (
 	"fmt"
 	"io"
 	"os"
+	"testing"
 )
 
 func FileToBytes(filePath string, size int) (res [][]byte) {
 	file, err := os.ReadFile(filePath)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Print("Open File Error:", err.Error())
 		return
 	}
 	for i := 0; i < (len(file)/size)+1; i++ {
@@ -23,24 +24,10 @@ func FileToBytes(filePath string, size int) (res [][]byte) {
 	return
 }
 
-func test() {
-	readFile, err := os.Open("./test_io/main.go")
-	if err != nil {
-		fmt.Print("异常了呀：", err)
-	}
-	buf := make([]byte, 1024)
-	n, err := readFile.Read(buf)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(n)
-	fmt.Println(len(buf))
-}
-
 func test02() (res [][]byte) {
-	readFile, err := os.Open("./test_io/main.go")
+	readFile, err := os.Open("./io_test.go")
 	if err != nil {
-		fmt.Print("异常了呀：", err)
+		fmt.Print("Open File Error:", err.Error())
 	}
 	for {
 		buf := make([]byte, 10)
@@ -53,7 +40,7 @@ func test02() (res [][]byte) {
 	return
 }
 
-func main() {
+func TestIO(t *testing.T) {
 	//bytes := FileToBytes("./test_io/main.go", 3200)
 	//fmt.Println(bytes)
 	test02()

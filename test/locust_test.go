@@ -1,9 +1,10 @@
-package main
+package test
 
 import (
 	"github.com/myzhan/boomer"
 	"log"
 	"os"
+	"testing"
 	"time"
 )
 
@@ -18,7 +19,7 @@ func foo() {
 	boomer.RecordSuccess("http", "foo", elapsed.Nanoseconds()/int64(time.Millisecond), int64(10))
 }
 
-func main() {
+func TestLocust(t *testing.T) {
 	logFile, err := os.OpenFile("./test_locust/log.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		log.Println("open log file failed, err:", err)

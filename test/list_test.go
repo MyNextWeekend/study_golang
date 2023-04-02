@@ -1,8 +1,11 @@
-package main
+package test
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
-func main() {
+func TestList(t *testing.T) {
 	numList := []int{1, 2, 3}
 	//遍历切片
 	for i, i2 := range numList {

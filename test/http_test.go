@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"bytes"
@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"testing"
 )
 
 // get请求
-func testGet() {
+func doGet() {
 	resp, err := http.Get("http://www.baidu.com")
 	if err != nil {
 		fmt.Println(err)
@@ -31,7 +32,7 @@ type Proper struct {
 }
 
 // 结构体转json
-func testPost() {
+func doPost() {
 	proper := Proper{Name: "张三", Age: 18}
 	marshal, err2 := json.Marshal(&proper)
 	if err2 != nil {
@@ -39,7 +40,7 @@ func testPost() {
 		return
 	}
 	fmt.Println("转换结果：", marshal)
-	resp, err := http.Post("http://www.baidu.com", "application/json", bytes.NewBuffer(marshal))
+	resp, err := http.Post(`http://www.baidu.com`, "application/json", bytes.NewBuffer(marshal))
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -48,7 +49,7 @@ func testPost() {
 	fmt.Print(resp.Status)
 }
 
-func main() {
-	testGet()
-	testPost()
+func TestHttp(t *testing.T) {
+	doGet()
+	doPost()
 }

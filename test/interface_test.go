@@ -1,6 +1,9 @@
-package main
+package test
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
 type animal interface {
 	speak()
@@ -20,7 +23,7 @@ func (d *dog) sing() {
 	fmt.Println("唱歌")
 }
 
-func main() {
+func TestInter(t *testing.T) {
 	var do dog
 	do.speak()
 	do.move()
