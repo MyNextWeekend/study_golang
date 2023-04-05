@@ -2,12 +2,19 @@ module study_golang
 
 go 1.18
 
-
 require (
 	github.com/myzhan/boomer v1.6.0
+	gorm.io/driver/mysql v1.4.7
+	gorm.io/gorm v1.24.6
+)
+
+require (
 	github.com/asaskevich/EventBus v0.0.0-20200907212545-49d423059eef // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/shirou/gopsutil v3.21.11+incompatible // indirect
