@@ -1,7 +1,7 @@
 package test
 
 import (
-	"study_golang/interface的正确使用/service"
+	"study_golang/interface_test/service"
 	"testing"
 )
 

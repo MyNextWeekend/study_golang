@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"study_golang/interface的正确使用/client"
+	"study_golang/interface_test/client"
 )
 
 /*

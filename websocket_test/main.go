@@ -1,7 +1,7 @@
 package main
 
 import (
-	"study_golang/test_websocket/server"
+	"study_golang/websocket_test/server"
 )
 
 func main() {
