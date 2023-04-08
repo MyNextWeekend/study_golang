@@ -10,7 +10,7 @@ import (
 )
 
 // get请求
-func doGet() {
+func TestDoGet(t *testing.T) {
 	resp, err := http.Get("http://www.baidu.com")
 	if err != nil {
 		fmt.Println(err)
@@ -32,7 +32,7 @@ type Proper struct {
 }
 
 // 结构体转json
-func doPost() {
+func TestDoPost(t *testing.T) {
 	proper := Proper{Name: "张三", Age: 18}
 	marshal, err2 := json.Marshal(&proper)
 	if err2 != nil {
@@ -47,9 +47,4 @@ func doPost() {
 	}
 	defer resp.Body.Close()
 	fmt.Print(resp.Status)
-}
-
-func TestHttp(t *testing.T) {
-	doGet()
-	doPost()
 }

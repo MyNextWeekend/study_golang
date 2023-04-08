@@ -3,6 +3,7 @@ package test
 import (
 	"context"
 	"fmt"
+	"testing"
 	"time"
 )
 
@@ -16,7 +17,7 @@ context 的使用规则:
 */
 
 // 程序在子协程运行了30s后就会被主协程关闭。
-func CancelTest() {
+func TestCancel(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	go func(ctx context.Context) {
 		for {
@@ -38,7 +39,7 @@ func CancelTest() {
 }
 
 // 子协程会在运行1分钟后主动退出，然后接着10秒后主协程也会运行完退出
-func TimeOutTest() {
+func TestTimeOut(t *testing.T) {
 	ctx, _ := context.WithTimeout(context.Background(), time.Minute*1)
 	go func(ctx context.Context) {
 		for {
@@ -61,7 +62,7 @@ func TimeOutTest() {
 // 函数中context.WithDeadline需要传入的是个时间点，我写的时间点时time.Now().Add(time.Minute * 1)，
 // 当前时间后的一分钟触发cancel函数(你可以选择任意时间点)，所以子协程会在运行一分钟后结束运行，
 // 当然未到一分钟时，你可以主动调用withDeadline方法所返回的cancel函数对子协程提前管理。
-func DeadLineTest() {
+func TestDeadLine(t *testing.T) {
 	ctx, _ := context.WithDeadline(context.Background(), time.Now().Add(time.Minute*1))
 	go func(ctx context.Context) {
 		for {
@@ -80,7 +81,7 @@ func DeadLineTest() {
 }
 
 // 将配置好的key-value的context传入子协程，然后子协程可以使用context.value()方法访问到值，这在各个父子关资的协程中传值比较方便。
-func WithValueTest() {
+func TestWithValue(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background()) //附加值
 	valueCtx := context.WithValue(ctx, "test", "子协程1")
 	go func(ctx context.Context) {
