@@ -1,7 +1,7 @@
 package test
 
 import (
-	"study_golang/interface_test/service"
+	"study_golang/test/interface_test/service"
 	"testing"
 )
 

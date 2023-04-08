@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"study_golang/interface_test/client"
+	"study_golang/test/interface_test/client"
 )
 
 /*
