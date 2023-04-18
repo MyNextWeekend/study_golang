@@ -13,13 +13,13 @@ import (
 func TestDoGet(t *testing.T) {
 	resp, err := http.Get("http://www.baidu.com")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Http Error:", err.Error())
 		return
 	}
 	defer resp.Body.Close()
 	respBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Read Body Error:", err.Error())
 		return
 	}
 	fmt.Println(string(respBytes))
@@ -34,17 +34,28 @@ type Proper struct {
 // 结构体转json
 func TestDoPost(t *testing.T) {
 	proper := Proper{Name: "张三", Age: 18}
-	marshal, err2 := json.Marshal(&proper)
-	if err2 != nil {
-		fmt.Println("转化失败。")
+	jsonByte, err := json.Marshal(&proper)
+	if err != nil {
+		fmt.Println("Json Marshal Error", err.Error())
 		return
 	}
-	fmt.Println("转换结果：", marshal)
-	resp, err := http.Post(`http://www.baidu.com`, "application/json", bytes.NewBuffer(marshal))
+	fmt.Println("转换结果：", jsonByte)
+
+	resp, err := http.Post(`https://www.baidu.com`, "application/json", bytes.NewBuffer(jsonByte))
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println("Http Error:", err.Error())
 		return
 	}
 	defer resp.Body.Close()
-	fmt.Print(resp.Status)
+	if resp.StatusCode != 200 {
+		fmt.Println("Http Code not 200:")
+		return
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Read Body Error:", err.Error())
+		return
+	}
+	fmt.Println(string(body))
+
 }
