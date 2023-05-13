@@ -18,5 +18,8 @@ func TestLogin(t *testing.T) {
 		return
 	}
 	fmt.Println(string(response))
+	fmt.Println("======================")
 
+	res := PostJson("http://106.55.186.222:8200/user/sign-in", map[string]string{"Passport": "zhangsan", "Password": "123456789"}, nil)
+	fmt.Println(res)
 }
