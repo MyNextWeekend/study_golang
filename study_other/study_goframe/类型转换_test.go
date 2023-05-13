@@ -3,20 +3,24 @@ package main
 import (
 	"fmt"
 	"github.com/gogf/gf/v2/util/gconv"
+	"testing"
+	"time"
 )
 
 type User struct {
-	Id   int
-	Name string
-	Age  int
+	Id       int
+	Name     string
+	Age      int
+	Birthday time.Time
 }
 
-func main() {
+func TestOne(t *testing.T) {
 	var user *User
 	user = &User{
-		Id:   3,
-		Name: "张三",
-		Age:  18,
+		Id:       3,
+		Name:     "张三",
+		Age:      18,
+		Birthday: time.Date(1949, time.October, 1, 0, 0, 0, 0, time.UTC).Local(),
 	}
 
 	// 结构体转 字符串/map
