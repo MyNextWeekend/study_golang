@@ -1,4 +1,4 @@
-package study
+package study_http
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"testing"
 )
 
 func login(username, password string) {
@@ -89,9 +88,4 @@ func register(username, password, nickname string) {
 		return
 	}
 	fmt.Println(string(readAll))
-}
-
-func TestLogin(t *testing.T) {
-	login("zhangsan", "123456789")
-	register("zhangsan", "123456789", "")
 }

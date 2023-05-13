@@ -2,16 +2,15 @@ package study
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"testing"
 )
 
-func FileToBytes(filePath string, size int) (res [][]byte) {
+// 读取文件，按照传入size切割
+func FileToBytes(filePath string, size int) (res [][]byte, err error) {
 	file, err := os.ReadFile(filePath)
 	if err != nil {
-		fmt.Print("Open File Error:", err.Error())
-		return
+		return nil, err
 	}
 	for i := 0; i < (len(file)/size)+1; i++ {
 		start := i * size
@@ -21,27 +20,16 @@ func FileToBytes(filePath string, size int) (res [][]byte) {
 		}
 		res = append(res, file[start:end])
 	}
-	return
+	return res, nil
 }
 
-func test02() (res [][]byte) {
-	readFile, err := os.Open("./io_test.go")
+func TestFileToBytes(t *testing.T) {
+	bytes, err := FileToBytes("./study_generate_dir/file.json", 20)
 	if err != nil {
-		fmt.Print("Open File Error:", err.Error())
+		fmt.Println(err.Error())
 	}
-	for {
-		buf := make([]byte, 10)
-		n, err := readFile.Read(buf)
-		if err == io.EOF {
-			break
-		}
-		res = append(res, buf[:n])
+	fmt.Println(len(bytes))
+	for _, value := range bytes {
+		fmt.Println(string(value))
 	}
-	return
-}
-
-func TestIO(t *testing.T) {
-	//bytes := FileToBytes("./test_io/main.go", 3200)
-	//fmt.Println(bytes)
-	test02()
 }
