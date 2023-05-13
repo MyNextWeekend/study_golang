@@ -3,6 +3,7 @@ module study_golang
 go 1.18
 
 require (
+	github.com/gogf/gf/v2 v2.3.3
 	github.com/myzhan/boomer v1.6.0
 	gorm.io/driver/mysql v1.4.7
 	gorm.io/gorm v1.24.6
@@ -26,5 +27,8 @@ require (
 	github.com/zeromq/goczmq v4.1.0+incompatible // indirect
 	github.com/zeromq/gomq v0.0.0-20201031135124-cef4e507bb8e // indirect
 	github.com/zeromq/gomq/zmtp v0.0.0-20201031135124-cef4e507bb8e // indirect
+	go.opentelemetry.io/otel v1.7.0 // indirect
+	go.opentelemetry.io/otel/trace v1.7.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
