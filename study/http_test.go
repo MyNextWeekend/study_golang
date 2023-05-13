@@ -9,53 +9,89 @@ import (
 	"testing"
 )
 
-// get请求
-func TestDoGet(t *testing.T) {
-	resp, err := http.Get("http://www.baidu.com")
+func login(username, password string) {
+	var client = &http.Client{}
+	url := "http://106.55.186.222:8200/user/sign-in"
+	body := make(map[string]string)
+	body["passport"] = username
+	body["password"] = password
+	bodyByte, _ := json.Marshal(body)
+
+	request, _ := http.NewRequest("POST", url, bytes.NewBuffer(bodyByte))
+	// 当使用Add时候，如果原本不存在，则添加，如果已存在，就不做任何修改
+	request.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
+	// 当使用Set时候，如果原来这一项已存在，则修改已有的。
+	request.Header.Set("Content-Type", "application/json")
+
+	response, err := client.Do(request)
 	if err != nil {
-		fmt.Println("Http Error:", err.Error())
+		fmt.Println(" http request err:", err.Error())
 		return
 	}
-	defer resp.Body.Close()
-	respBytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Read Body Error:", err.Error())
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println("body close err:", err.Error())
+			return
+		}
+	}(response.Body)
+
+	if response.StatusCode != 200 {
+		fmt.Println("http status code err:", err.Error())
 		return
 	}
-	fmt.Println(string(respBytes))
-	fmt.Println(resp.Status)
+	readAll, err := io.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println("read body err:", err.Error())
+		return
+	}
+	fmt.Println(string(readAll))
 }
 
-type Proper struct {
-	Name string
-	Age  int
+func register(username, password, nickname string) {
+	var client = &http.Client{}
+	url := "http://106.55.186.222:8200/user/sign-up"
+	body := make(map[string]string)
+	body["passport"] = username
+	body["password"] = password
+	body["password2"] = password
+	body["nickname"] = nickname
+	bodyByte, _ := json.Marshal(body)
+
+	request, _ := http.NewRequest("POST", url, bytes.NewBuffer(bodyByte))
+	// 当使用Add时候，如果原本不存在，则添加，如果已存在，就不做任何修改
+	request.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
+	// 当使用Set时候，如果原来这一项已存在，则修改已有的。
+	request.Header.Set("Content-Type", "application/json")
+
+	response, err := client.Do(request)
+	if err != nil {
+		fmt.Println(" http request err:", err.Error())
+		return
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println("body close err:", err.Error())
+			return
+		}
+	}(response.Body)
+
+	if response.StatusCode != 200 {
+		fmt.Println("http status code err:", err.Error())
+		return
+	}
+	readAll, err := io.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println("read body err:", err.Error())
+		return
+	}
+	fmt.Println(string(readAll))
 }
 
-// 结构体转json
-func TestDoPost(t *testing.T) {
-	proper := Proper{Name: "张三", Age: 18}
-	jsonByte, err := json.Marshal(&proper)
-	if err != nil {
-		fmt.Println("Json Marshal Error", err.Error())
-		return
-	}
-	fmt.Println("转换结果：", jsonByte)
-
-	resp, err := http.Post(`https://www.baidu.com`, "application/json", bytes.NewBuffer(jsonByte))
-	if err != nil {
-		fmt.Println("Http Error:", err.Error())
-		return
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		fmt.Println("Http Code not 200:")
-		return
-	}
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Read Body Error:", err.Error())
-		return
-	}
-	fmt.Println(string(body))
-
+func TestLogin(t *testing.T) {
+	login("zhangsan", "123456789")
+	register("zhangsan", "123456789", "")
 }
