@@ -13,7 +13,7 @@ type Client struct {
 	ServerPort int
 	Name       string
 	conn       net.Conn
-	flag       int //当前client的模式
+	chatFlag   int //当前client的模式
 }
 
 func NewClient(serverIp string, serverPort int) *Client {
@@ -21,7 +21,7 @@ func NewClient(serverIp string, serverPort int) *Client {
 	client := &Client{
 		ServerIp:   serverIp,
 		ServerPort: serverPort,
-		flag:       999,
+		chatFlag:   999,
 	}
 
 	//链接server
@@ -44,17 +44,17 @@ func (client *Client) DealResponse() {
 }
 
 func (client *Client) menu() bool {
-	var flag int
+	var chatFlag int
 
 	fmt.Println("1.公聊模式")
 	fmt.Println("2.私聊模式")
 	fmt.Println("3.更新用户名")
 	fmt.Println("0.退出")
 
-	fmt.Scanln(&flag)
+	fmt.Scanln(&chatFlag)
 
-	if flag >= 0 && flag <= 3 {
-		client.flag = flag
+	if chatFlag >= 0 && chatFlag <= 3 {
+		client.chatFlag = chatFlag
 		return true
 	} else {
 		fmt.Println(">>>>请输入合法范围内的数字<<<<")
@@ -151,12 +151,12 @@ func (client *Client) UpdateName() bool {
 }
 
 func (client *Client) Run() {
-	for client.flag != 0 {
+	for client.chatFlag != 0 {
 		for client.menu() != true {
 		}
 
 		//根据不同的模式处理不同的业务
-		switch client.flag {
+		switch client.chatFlag {
 		case 1:
 			//公聊模式
 			client.PublicChat()

@@ -1,4 +1,4 @@
-package test
+package study
 
 import (
 	"encoding/json"

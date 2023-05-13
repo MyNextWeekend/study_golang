@@ -1,4 +1,4 @@
-package test
+package study
 
 import (
 	"context"
@@ -40,7 +40,8 @@ func TestCancel(t *testing.T) {
 
 // 子协程会在运行1分钟后主动退出，然后接着10秒后主协程也会运行完退出
 func TestTimeOut(t *testing.T) {
-	ctx, _ := context.WithTimeout(context.Background(), time.Minute*1)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Minute*1)
+	defer cancelFunc()
 	go func(ctx context.Context) {
 		for {
 			select {
@@ -63,7 +64,8 @@ func TestTimeOut(t *testing.T) {
 // 当前时间后的一分钟触发cancel函数(你可以选择任意时间点)，所以子协程会在运行一分钟后结束运行，
 // 当然未到一分钟时，你可以主动调用withDeadline方法所返回的cancel函数对子协程提前管理。
 func TestDeadLine(t *testing.T) {
-	ctx, _ := context.WithDeadline(context.Background(), time.Now().Add(time.Minute*1))
+	ctx, cancelFunc := context.WithDeadline(context.Background(), time.Now().Add(time.Minute*1))
+	defer cancelFunc()
 	go func(ctx context.Context) {
 		for {
 			select {

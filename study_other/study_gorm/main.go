@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"study_golang/gorm_test/dao"
+	"study_golang/study_other/study_gorm/dao"
 	"time"
 )
 

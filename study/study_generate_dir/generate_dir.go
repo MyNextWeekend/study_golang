@@ -1,11 +1,10 @@
-package test
+package main
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
-	"testing"
 )
 
 var (
@@ -67,7 +66,7 @@ func creatDir(path string) {
 	fmt.Println(path)
 }
 
-func TestGenerateDir(t *testing.T) {
+func main() {
 	loadJsonFile()
 	parseNode(iRootNode, "")
 }

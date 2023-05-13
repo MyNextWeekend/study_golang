@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"study_golang/gorm_test/dao"
+	"study_golang/study_other/study_gorm/dao"
 	"time"
 )
 
@@ -12,7 +12,9 @@ var DB *gorm.DB
 
 func CreatTable() {
 	//根据模型字段生成表
-	DB.AutoMigrate(&dao.User{})
+	if DB.AutoMigrate(&dao.User{}) != nil {
+		return
+	}
 }
 
 func InitORM() {

@@ -1,4 +1,4 @@
-package test
+package study_other
 
 import (
 	"github.com/myzhan/boomer"
