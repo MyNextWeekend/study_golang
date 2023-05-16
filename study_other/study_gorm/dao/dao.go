@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type User struct {
+type User struct { // 表名是users
 	gorm.Model
 	Name         string
 	Email        string
