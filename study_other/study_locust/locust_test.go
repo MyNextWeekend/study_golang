@@ -1,4 +1,4 @@
-package study_other
+package study_locust
 
 import (
 	"github.com/myzhan/boomer"

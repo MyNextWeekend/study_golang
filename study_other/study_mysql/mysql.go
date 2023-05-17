@@ -13,8 +13,8 @@ func InitMySQL() {
 	DB.SetConnMaxLifetime(100)
 	DB.SetMaxIdleConns(10)
 	if err := DB.Ping(); err != nil {
-		fmt.Println("open mysql err:", err.Error())
-		return
+		fmt.Println("connect mysql err:", err.Error())
+		panic("connect mysql err:" + err.Error())
 	}
 	fmt.Println("connect mysql success")
 }
