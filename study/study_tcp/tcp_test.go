@@ -1,4 +1,4 @@
-package study
+package study_tcp
 
 import (
 	"fmt"
