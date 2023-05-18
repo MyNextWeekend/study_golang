@@ -1,8 +1,11 @@
-package main
+package study_viper
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
-func main() {
+func TestVip(t *testing.T) {
 	InitViper()
 
 	//fmt.Println("name:", vip.GetString("name"))

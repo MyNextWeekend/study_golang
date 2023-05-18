@@ -1,13 +1,18 @@
-package main
+package study_mysql
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
 type User struct {
 	Name string
 	Age  int
 }
 
-func queryOne() {
+func TestQueryOne(t *testing.T) {
+	InitMySQL()
+
 	var user User
 	err := DB.QueryRow("select name,age from users;").Scan(&user.Name, &user.Age)
 	if err != nil {
@@ -16,7 +21,9 @@ func queryOne() {
 	fmt.Println(user)
 }
 
-func queryMany() {
+func TestQueryMany(t *testing.T) {
+	InitMySQL()
+
 	var user []*User
 	sql := "select name,age from users;"
 	rows, err := DB.Query(sql)
@@ -36,10 +43,4 @@ func queryMany() {
 	}
 	fmt.Println(len(user))
 	fmt.Println(user)
-}
-
-func main() {
-	InitMySQL()
-	queryOne()
-	queryMany()
 }

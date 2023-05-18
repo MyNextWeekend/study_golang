@@ -1,8 +1,9 @@
-package main
+package study_gorm
 
 import (
 	"fmt"
 	"study_golang/study_other/study_gorm/dao"
+	"testing"
 	"time"
 )
 
@@ -71,7 +72,7 @@ func SelectMany() {
 	fmt.Println("查询出来的数据：", user)
 }
 
-func main() {
+func TestOrm(t *testing.T) {
 	InitORM()
 	//CreatTable()
 	//InsertOne()

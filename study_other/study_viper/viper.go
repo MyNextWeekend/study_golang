@@ -1,4 +1,4 @@
-package main
+package study_viper
 
 import (
 	"fmt"
@@ -12,8 +12,8 @@ func InitViper() {
 	vip = viper.New()
 	//设置读取的配置文件
 	vip.SetConfigName("config2")
-	//添加读取的配置文件路径
-	vip.AddConfigPath("./study_other/study_viper/config/")
+	//添加读取的配置文件路径, （如果从main运行从根目录  如果test方法运行从当前目录）
+	vip.AddConfigPath("./config/")
 	//windows环境下为%GOPATH，linux环境下为$GOPATH
 	//vip.AddConfigPath("$GOPATH/src/")
 	//设置配置文件类型

@@ -1,4 +1,4 @@
-package test
+package study_interface
 
 import (
 	"study_golang/study/study_interface/service"
