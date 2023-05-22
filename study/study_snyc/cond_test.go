@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 	"testing"
+	"time"
 )
 
 /**
@@ -20,36 +21,39 @@ var sharedRsc = make(map[string]interface{})
 func TestCond(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(2)
-	m := sync.Mutex{}
-	c := sync.NewCond(&m)
+	cond := sync.NewCond(&sync.Mutex{})
 
 	go func() {
-		// this go routine wait for changes to the sharedRsc
-		c.L.Lock()
-		for len(sharedRsc) == 0 {
-			c.Wait()
+		defer wg.Done()
+		cond.L.Lock()
+		defer cond.L.Unlock()
+
+		for len(sharedRsc) == 0 { // 不能假设条件为真。
+			fmt.Println("goroutine 01 is wait...")
+			// Wait()会自动释放c.L，并挂起调用者的goroutine。之后恢复执行，Wait()会在返回时对c.L加锁。
+			// 除非被Signal或者Broadcast唤醒，否则Wait()不会返回。
+			cond.Wait()
+			fmt.Println("goroutine 01 is go go go...")
 		}
-		fmt.Println(sharedRsc["rsc1"])
-		c.L.Unlock()
-		wg.Done()
+		fmt.Println("goroutine 01 working", sharedRsc["rsc1"])
 	}()
 
 	go func() {
-		// this go routine wait for changes to the sharedRsc
-		c.L.Lock()
-		for len(sharedRsc) == 0 {
-			c.Wait()
+		defer wg.Done()
+		cond.L.Lock()
+		defer cond.L.Unlock()
+
+		for len(sharedRsc) == 0 { // 不能假设条件为真。
+			cond.Wait()
 		}
-		fmt.Println(sharedRsc["rsc2"])
-		c.L.Unlock()
-		wg.Done()
+		fmt.Println("goroutine 02 working", sharedRsc["rsc2"])
 	}()
 
-	// this one writes changes to sharedRsc
-	c.L.Lock()
+	time.Sleep(3 * time.Second)
+	cond.L.Lock()
 	sharedRsc["rsc1"] = "foo"
 	sharedRsc["rsc2"] = "bar"
-	c.Broadcast()
-	c.L.Unlock()
+	cond.Broadcast()
+	cond.L.Unlock()
 	wg.Wait()
 }
