@@ -23,7 +23,8 @@ import (
 //func (m *Map) Range(f func(key, value interface{}) bool)
 
 func TestMap(t *testing.T) {
-	sMap := &sync.Map{}
+	//sMap := &sync.Map{}
+	var sMap sync.Map //结构体内部会赋予默认值
 	sMap.Store("张三", 19)
 	fmt.Println(sMap.Load("张三"))
 }
