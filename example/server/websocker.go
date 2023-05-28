@@ -12,15 +12,19 @@ import (
 )
 
 type Client struct {
-	end    chan struct{}   // 结束标识
-	conn   *websocket.Conn //websocket链接
-	ticker *time.Ticker    // 间隔固定时间向服务器发送ping，保持心跳
+	agentId string
+	end     chan struct{}   // 结束标识
+	conn    *websocket.Conn //websocket链接
+	ticker  *time.Ticker    // 间隔固定时间向服务器发送ping，保持心跳
+	s       *server
 }
 
-func NewClient(t time.Duration) *Client {
+func NewClient(agentId string, s *server) *Client {
 	return &Client{
-		end:    make(chan struct{}),
-		ticker: time.NewTicker(t),
+		agentId: agentId,
+		end:     make(chan struct{}),
+		ticker:  time.NewTicker(10 * time.Second),
+		s:       s,
 	}
 }
 
@@ -51,7 +55,6 @@ func (c *Client) readMessage() {
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
-			// todo 处理异常
 			fmt.Println("读取消息错误:", err)
 			return
 		}
@@ -61,7 +64,6 @@ func (c *Client) readMessage() {
 
 // 定时写消息
 func (c *Client) writeMessage() {
-	defer close(c.end)
 	for {
 		select {
 		case <-c.end:
@@ -74,14 +76,16 @@ func (c *Client) writeMessage() {
 		case <-c.ticker.C:
 			err := c.conn.WriteMessage(websocket.TextMessage, []byte("ping"))
 			if err != nil {
-				// todo 处理异常
 				fmt.Println("写入消息错误:", err)
-				return
+				c.Stop()
 			}
 		}
 	}
 }
 
 func (c *Client) Stop() {
-	c.end <- struct{}{}
+	fmt.Println("stop ", c.agentId)
+	close(c.end)
+	// 从map中删除key
+	c.s.clientMap.Delete(c.agentId)
 }

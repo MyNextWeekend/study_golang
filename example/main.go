@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	config.InitLog()
 	config.InitConfig()
 	router.InitRouter()
 }

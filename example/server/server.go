@@ -4,51 +4,47 @@ import (
 	"errors"
 	"fmt"
 	"sync"
-	"time"
 )
 
-var C *Clients
+var Server *server
 
-type Clients struct {
+type server struct {
 	clientMap sync.Map
 }
 
 func init() {
-	C = &Clients{}
+	Server = &server{}
 }
 
-func (c *Clients) Add(key string) error {
-	_, ok := c.clientMap.Load(key)
+func (s *server) AddClient(agentId string) error {
+	_, ok := s.clientMap.Load(agentId)
 	if ok {
 		return errors.New("信息已存在，请勿重复提交！！！")
 	}
-
-	client := NewClient(10 * time.Second)
+	client := NewClient(agentId, s)
 	err := client.Conn()
 	if err != nil {
 		fmt.Println(err.Error())
 		return err
 	}
 	// 加入到map中
-	c.clientMap.Store(key, client)
+	s.clientMap.Store(agentId, client)
 	return nil
 }
 
-func (c *Clients) Stop(key string) error {
-	value, ok := c.clientMap.Load(key)
+func (s *server) StopClient(agentId string) error {
+	value, ok := s.clientMap.Load(agentId)
 	if !ok {
 		return errors.New("输入的信息不存在")
 	}
 	// 调用stop方法
 	value.(*Client).Stop()
-	// 从map中删除key
-	c.clientMap.Delete(key)
 	return nil
 }
 
-func (c *Clients) QueryAll() (result []string) {
+func (s *server) QueryAllClient() (result []string) {
 	result = make([]string, 0)
-	c.clientMap.Range(func(key, value any) bool {
+	s.clientMap.Range(func(key, value any) bool {
 		result = append(result, key.(string))
 		return true
 	})

@@ -14,7 +14,7 @@ func InitRouter() {
 		})
 	})
 	r.GET("/add", func(c *gin.Context) {
-		err := server.C.Add("666")
+		err := server.Server.AddClient("666")
 		if err != nil {
 			c.JSON(200, gin.H{
 				"message": err.Error(),
@@ -26,14 +26,14 @@ func InitRouter() {
 		})
 	})
 	r.GET("/queryAll", func(c *gin.Context) {
-		result := server.C.QueryAll()
+		result := server.Server.QueryAllClient()
 		c.JSON(200, gin.H{
 			"total": len(result),
 			"data":  result,
 		})
 	})
 	r.GET("/stop", func(c *gin.Context) {
-		err := server.C.Stop("666")
+		err := server.Server.StopClient("666")
 		if err != nil {
 			c.JSON(200, gin.H{
 				"message": err.Error(),
