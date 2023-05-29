@@ -2,7 +2,7 @@ package server
 
 import (
 	"errors"
-	"fmt"
+	"study_golang/example/config"
 	"sync"
 )
 
@@ -19,12 +19,13 @@ func init() {
 func (s *server) AddClient(agentId string) error {
 	_, ok := s.clientMap.Load(agentId)
 	if ok {
+		config.Logger.Info("map already have ", agentId)
 		return errors.New("信息已存在，请勿重复提交！！！")
 	}
 	client := NewClient(agentId, s)
 	err := client.Conn()
 	if err != nil {
-		fmt.Println(err.Error())
+		config.Logger.Warn(err.Error())
 		return err
 	}
 	// 加入到map中
@@ -35,6 +36,7 @@ func (s *server) AddClient(agentId string) error {
 func (s *server) StopClient(agentId string) error {
 	value, ok := s.clientMap.Load(agentId)
 	if !ok {
+		config.Logger.Info("map not have ", agentId)
 		return errors.New("输入的信息不存在")
 	}
 	// 调用stop方法

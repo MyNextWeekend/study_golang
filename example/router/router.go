@@ -7,7 +7,7 @@ import (
 )
 
 func InitRouter() {
-	gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.TestMode)
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -16,6 +16,7 @@ func InitRouter() {
 	})
 	r.GET("/add/:agentId", func(c *gin.Context) {
 		agentId := c.Param("agentId")
+		config.Logger.Info("add ", agentId)
 		err := server.Server.AddClient(agentId)
 		if err != nil {
 			c.JSON(200, gin.H{
@@ -36,6 +37,8 @@ func InitRouter() {
 	})
 	r.GET("/stop/:agentId", func(c *gin.Context) {
 		agentId := c.Param("agentId")
+		config.Logger.Info("stop ", agentId)
+
 		err := server.Server.StopClient(agentId)
 		if err != nil {
 			c.JSON(200, gin.H{
@@ -47,5 +50,7 @@ func InitRouter() {
 			"message": "success stop",
 		})
 	})
+
+	config.Logger.Infof("running port %s", config.HttpPort)
 	_ = r.Run(":" + config.HttpPort)
 }

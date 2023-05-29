@@ -5,9 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"io"
 	"net/url"
-	"strings"
 	"study_golang/example/config"
 	"time"
 )
@@ -38,22 +36,15 @@ func NewClient(agentId string, s *server) *Client {
 	}
 }
 
-func (c *Client) Conn() error {
+func (c *Client) Conn() (err error) {
 	path := config.WebSocketPath + getUrlPath(c.agentId)
 	u := url.URL{Scheme: config.WebSocketScheme, Host: config.WebSocketHost, Path: path}
-	fmt.Printf("用户：%s --> url：%s\n", c.agentId, u.String())
+	config.Logger.Infof("用户：%s --> url：%s\n", c.agentId, u.String())
 
-	conn, resp, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	c.conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
 		return errors.New("conn websocket failed " + err.Error())
 	}
-	defer resp.Body.Close()
-	result, _ := io.ReadAll(resp.Body)
-	// 判断是否建立成功，如果已经建立链接
-	if strings.Contains(string(result), "别处") {
-		return errors.New("用户：" + c.agentId + " 已经建立连接")
-	}
-	c.conn = conn
 
 	go c.readMessage()  // 启动一个读协程
 	go c.writeMessage() // 启动一个写的协程
@@ -63,12 +54,19 @@ func (c *Client) Conn() error {
 // 读返回的消息
 func (c *Client) readMessage() {
 	for {
-		_, message, err := c.conn.ReadMessage()
-		if err != nil {
-			fmt.Println("读取消息错误:", err)
+		select {
+		case <-c.end:
+			config.Logger.Infof("%s close read line success\n", c.agentId)
 			return
+		default:
+			_, message, err := c.conn.ReadMessage()
+			if err != nil {
+				config.Logger.Warn("read message err ", err.Error())
+				c.Stop() // 读异常就关闭链接
+				return
+			}
+			config.Logger.Infof("%s get massage: %s\n", c.agentId, message)
 		}
-		fmt.Printf("收到消息:%s\n", message)
 	}
 }
 
@@ -77,25 +75,27 @@ func (c *Client) writeMessage() {
 	for {
 		select {
 		case <-c.end:
-			fmt.Printf("用户：%s 接收到中断信号，关闭连接...\n", c.agentId)
-			err := c.conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
-			if err != nil {
-				fmt.Println("发送关闭消息错误:", err)
-			}
+			_ = c.conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
+			config.Logger.Infof("%s close write line success\n", c.agentId)
 			return
 		case <-c.ticker.C:
 			err := c.conn.WriteMessage(websocket.TextMessage, []byte("ping"))
 			if err != nil {
-				fmt.Println("写入消息错误:", err)
-				c.Stop()
+				config.Logger.Warnf("%s write message err: %s\n", c.agentId, err.Error())
+				c.Stop() // 写入异常就关闭链接
+				return
 			}
 		}
 	}
 }
 
 func (c *Client) Stop() {
-	fmt.Println("stop ", c.agentId)
-	close(c.end)
-	// 从map中删除key
-	c.s.clientMap.Delete(c.agentId)
+	select {
+	case <-c.end:
+		return
+	default:
+		close(c.end)
+		// 从map中删除key
+		c.s.clientMap.Delete(c.agentId)
+	}
 }
