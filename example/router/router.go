@@ -13,8 +13,9 @@ func InitRouter() {
 			"message": "pong",
 		})
 	})
-	r.GET("/add", func(c *gin.Context) {
-		err := server.Server.AddClient("666")
+	r.GET("/add/:agentId", func(c *gin.Context) {
+		agentId := c.Param("agentId")
+		err := server.Server.AddClient(agentId)
 		if err != nil {
 			c.JSON(200, gin.H{
 				"message": err.Error(),
@@ -32,8 +33,9 @@ func InitRouter() {
 			"data":  result,
 		})
 	})
-	r.GET("/stop", func(c *gin.Context) {
-		err := server.Server.StopClient("666")
+	r.GET("/stop/:agentId", func(c *gin.Context) {
+		agentId := c.Param("agentId")
+		err := server.Server.StopClient(agentId)
 		if err != nil {
 			c.JSON(200, gin.H{
 				"message": err.Error(),

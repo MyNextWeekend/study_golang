@@ -1,6 +1,7 @@
 package server
 
 import (
+	"crypto/sha256"
 	"errors"
 	"fmt"
 	"github.com/gorilla/websocket"
@@ -19,6 +20,15 @@ type Client struct {
 	s       *server
 }
 
+func getUrlPath(agentId string) (urlPath string) {
+	org := "10000030"
+	phoneNum := "6543"
+	key := fmt.Sprintf("7A89843D507A3229745CFB23C2B27871%s%s%s", agentId, org, phoneNum)
+	ag := fmt.Sprintf("%x", sha256.Sum256([]byte(key)))
+	urlPath = fmt.Sprintf("outMessageSocket/%s/%s/%s/%s", ag, agentId, org, phoneNum)
+	return
+}
+
 func NewClient(agentId string, s *server) *Client {
 	return &Client{
 		agentId: agentId,
@@ -29,9 +39,9 @@ func NewClient(agentId string, s *server) *Client {
 }
 
 func (c *Client) Conn() error {
-	path := config.WebSocketPath
+	path := config.WebSocketPath + getUrlPath(c.agentId)
 	u := url.URL{Scheme: config.WebSocketScheme, Host: config.WebSocketHost, Path: path}
-	fmt.Println("url：" + u.String())
+	fmt.Printf("用户：%s --> url：%s\n", c.agentId, u.String())
 
 	conn, resp, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
@@ -41,7 +51,7 @@ func (c *Client) Conn() error {
 	result, _ := io.ReadAll(resp.Body)
 	// 判断是否建立成功，如果已经建立链接
 	if strings.Contains(string(result), "别处") {
-		return errors.New("已经建立连接")
+		return errors.New("用户：" + c.agentId + " 已经建立连接")
 	}
 	c.conn = conn
 
@@ -67,7 +77,7 @@ func (c *Client) writeMessage() {
 	for {
 		select {
 		case <-c.end:
-			fmt.Println("接收到中断信号，关闭连接...")
+			fmt.Printf("用户：%s 接收到中断信号，关闭连接...\n", c.agentId)
 			err := c.conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 			if err != nil {
 				fmt.Println("发送关闭消息错误:", err)
