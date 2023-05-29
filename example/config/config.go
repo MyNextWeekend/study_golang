@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"gopkg.in/ini.v1"
 )
 
@@ -15,8 +14,7 @@ var (
 func InitConfig() {
 	file, err := ini.Load("./example/config/config.ini")
 	if err != nil {
-		fmt.Println("ini load failed", err.Error())
-		return
+		panic("ini load failed" + err.Error())
 	}
 	HttpPort = file.Section("server").Key("HttpPort").String()
 	WebSocketScheme = file.Section("websocket").Key("WebSocketScheme").String()
