@@ -14,7 +14,7 @@ var (
 func InitConfig() {
 	file, err := ini.Load("./example/config/config.ini")
 	if err != nil {
-		panic("ini load failed" + err.Error())
+		panic("init load failed" + err.Error())
 	}
 	HttpPort = file.Section("server").Key("HttpPort").String()
 	WebSocketScheme = file.Section("websocket").Key("WebSocketScheme").String()
