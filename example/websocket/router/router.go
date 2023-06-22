@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"study_golang/example/config"
-	"study_golang/example/server"
+	config2 "study_golang/example/websocket/config"
+	"study_golang/example/websocket/server"
 )
 
 func InitRouter() {
@@ -16,7 +16,7 @@ func InitRouter() {
 	})
 	r.GET("/add/:agentId", func(c *gin.Context) {
 		agentId := c.Param("agentId")
-		config.Logger.Info("add ", agentId)
+		config2.Logger.Info("add ", agentId)
 		err := server.Server.AddClient(agentId)
 		if err != nil {
 			c.JSON(200, gin.H{
@@ -37,7 +37,7 @@ func InitRouter() {
 	})
 	r.GET("/stop/:agentId", func(c *gin.Context) {
 		agentId := c.Param("agentId")
-		config.Logger.Info("stop ", agentId)
+		config2.Logger.Info("stop ", agentId)
 
 		err := server.Server.StopClient(agentId)
 		if err != nil {
@@ -51,6 +51,6 @@ func InitRouter() {
 		})
 	})
 
-	config.Logger.Infof("running port %s", config.HttpPort)
-	_ = r.Run(":" + config.HttpPort)
+	config2.Logger.Infof("running port %s", config2.HttpPort)
+	_ = r.Run(":" + config2.HttpPort)
 }

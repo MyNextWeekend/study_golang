@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	"net/url"
-	"study_golang/example/config"
+	config2 "study_golang/example/websocket/config"
 	"time"
 )
 
@@ -37,9 +37,9 @@ func NewClient(agentId string, s *server) *Client {
 }
 
 func (c *Client) Conn() (err error) {
-	path := config.WebSocketPath + getUrlPath(c.agentId)
-	u := url.URL{Scheme: config.WebSocketScheme, Host: config.WebSocketHost, Path: path}
-	config.Logger.Infof("用户：%s --> url：%s\n", c.agentId, u.String())
+	path := config2.WebSocketPath + getUrlPath(c.agentId)
+	u := url.URL{Scheme: config2.WebSocketScheme, Host: config2.WebSocketHost, Path: path}
+	config2.Logger.Infof("用户：%s --> url：%s\n", c.agentId, u.String())
 
 	c.conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
@@ -56,16 +56,16 @@ func (c *Client) readMessage() {
 	for {
 		select {
 		case <-c.end:
-			config.Logger.Infof("%s close read line success\n", c.agentId)
+			config2.Logger.Infof("%s close read line success\n", c.agentId)
 			return
 		default:
 			_, message, err := c.conn.ReadMessage()
 			if err != nil {
-				config.Logger.Warn("read message err ", err.Error())
+				config2.Logger.Warn("read message err ", err.Error())
 				c.Stop() // 读异常就关闭链接
 				return
 			}
-			config.Logger.Infof("%s get massage: %s\n", c.agentId, message)
+			config2.Logger.Infof("%s get massage: %s\n", c.agentId, message)
 		}
 	}
 }
@@ -76,12 +76,12 @@ func (c *Client) writeMessage() {
 		select {
 		case <-c.end:
 			_ = c.conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
-			config.Logger.Infof("%s close write line success\n", c.agentId)
+			config2.Logger.Infof("%s close write line success\n", c.agentId)
 			return
 		case <-c.ticker.C:
 			err := c.conn.WriteMessage(websocket.TextMessage, []byte("ping"))
 			if err != nil {
-				config.Logger.Warnf("%s write message err: %s\n", c.agentId, err.Error())
+				config2.Logger.Warnf("%s write message err: %s\n", c.agentId, err.Error())
 				c.Stop() // 写入异常就关闭链接
 				return
 			}

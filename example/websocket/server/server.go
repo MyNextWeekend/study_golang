@@ -2,7 +2,7 @@ package server
 
 import (
 	"errors"
-	"study_golang/example/config"
+	"study_golang/example/websocket/config"
 	"sync"
 )
 
