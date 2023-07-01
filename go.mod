@@ -14,6 +14,7 @@ require (
 	github.com/robfig/cron v1.2.0
 	github.com/sirupsen/logrus v1.9.2
 	github.com/spf13/viper v1.15.0
+	gocv.io/x/gocv v0.33.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/mysql v1.4.7
 	gorm.io/gorm v1.24.6
