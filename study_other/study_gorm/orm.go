@@ -22,7 +22,7 @@ func InitORM() {
 	//dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
 	//db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
-	dsn := "study_go:123456789@tcp(106.55.186.222:3306)/study_go?charset=utf8&parseTime=True&loc=Local"
+	dsn := "study_golang:6xkiKTGzfPE7bXWE@tcp(106.55.186.222:3306)/study_golang?charset=utf8&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,   // DSN data source name
 		DefaultStringSize:         256,   // string 类型字段的默认长度
@@ -34,14 +34,12 @@ func InitORM() {
 	if err != nil {
 		panic("Connect Database Error:" + err.Error())
 	}
+
 	// ----------------------------数据库连接池----------------------------
-	sqlDB, err := db.DB()
-	// SetMaxIdleConns 设置空闲连接池中连接的最大数量
-	sqlDB.SetMaxIdleConns(10)
-	// SetMaxOpenConns 设置打开数据库连接的最大数量。
-	sqlDB.SetMaxOpenConns(100)
-	// SetConnMaxLifetime 设置了连接可复用的最大时间。
-	sqlDB.SetConnMaxLifetime(time.Hour)
+	sqlDB, _ := db.DB()
+	sqlDB.SetMaxIdleConns(10)           //  设置空闲连接池中连接的最大数量
+	sqlDB.SetMaxOpenConns(100)          //  设置打开数据库连接的最大数量
+	sqlDB.SetConnMaxLifetime(time.Hour) //  设置了连接可复用的最大时间
 	fmt.Println("success to link mysql")
 	DB = db
 }
