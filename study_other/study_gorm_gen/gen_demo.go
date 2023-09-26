@@ -8,7 +8,7 @@ import (
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "./study_other/study_gorm_gen/dal",
+		OutPath: "./study_other/study_gorm_gen/dao",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery, // generate mode
 	})
 

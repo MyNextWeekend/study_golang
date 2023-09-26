@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"study_golang/study_other/study_gorm_gen/dal"
+	"study_golang/study_other/study_gorm_gen/dao"
 	"study_golang/study_other/study_gorm_gen/model"
 	"testing"
 	"time"
@@ -16,7 +16,7 @@ func InitDb() {
 	if err != nil {
 		panic("open db err: " + err.Error())
 	}
-	dal.SetDefault(db) // 设置数据库链接
+	dao.SetDefault(db) // 设置数据库链接
 }
 
 func TestCreat(t *testing.T) {
@@ -30,7 +30,7 @@ func TestCreat(t *testing.T) {
 		CreateAt: time.Now(),
 		UpdateAt: time.Now(),
 	}
-	err := dal.UserInfo.Create(&user)
+	err := dao.UserInfo.Create(&user)
 	if err != nil {
 		fmt.Println("creat err: " + err.Error())
 	}
@@ -39,7 +39,7 @@ func TestCreat(t *testing.T) {
 func TestQuery(t *testing.T) {
 	InitDb()
 
-	users, err := dal.UserInfo.Where(dal.UserInfo.UserName.Like("z%")).Find()
+	users, err := dao.UserInfo.Where(dao.UserInfo.UserName.Like("z%")).Find()
 	if err != nil {
 		fmt.Println("creat err: " + err.Error())
 	}
