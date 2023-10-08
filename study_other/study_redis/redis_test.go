@@ -1,20 +1,27 @@
 package study_redis
 
 import (
+	"context"
 	"fmt"
 	"testing"
 )
 
 func TestName(t *testing.T) {
 	InitRedis()
-	err := Setex("zhangsan", "lisi", 0)
+
+	ctx := context.Background()
+
+	err := Set(ctx, "zhangsan", "lisi")
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("redis set err: " + err.Error())
 	}
-	result, err := Get("zhangsa1n")
+
+	result, err := Get(ctx, "zhangsan")
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("redis get key err: " + err.Error())
 		return
 	}
-	fmt.Println(result)
+
+	fmt.Println("从redis中获取的结果是：" + result)
+	fmt.Println("done")
 }

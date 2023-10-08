@@ -1,26 +1,33 @@
 package study_redis
 
 import (
-	"github.com/go-redis/redis"
+	"context"
+	"github.com/redis/go-redis/v9"
 	"time"
 )
 
 var client *redis.Client
 
-func Setex(key string, value interface{}, expiration time.Duration) error {
-	return client.Set(key, value, expiration).Err()
+// Set 方法 设置key和value，以及key的过期时间expiration 返回值：error
+func Set(ctx context.Context, key string, val interface{}) error {
+	expiration := 30 * time.Second
+	return client.Set(ctx, key, val, expiration).Err()
 }
 
-// Get 获取 key 对应的 value
-func Get(key string) (string, error) {
-	return client.Get(key).Result()
-
+// Get 方法 返回值和错误信息
+func Get(ctx context.Context, k string) (string, error) {
+	return client.Get(ctx, k).Result()
 }
 
 func InitRedis() {
 	client = redis.NewClient(&redis.Options{
 		Addr:     "106.55.186.222:6379",
-		Password: "remember", // no password set
-		DB:       0,          // use default DB
+		Password: "asdfgqwet123df12345", // no password set
+		DB:       0,                     // use default DB
 	})
+
+	_, err := client.Ping(context.Background()).Result()
+	if err != nil {
+		panic("redis ping err: " + err.Error())
+	}
 }
