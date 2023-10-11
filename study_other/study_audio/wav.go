@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// 按照200ms切录音
 func splitAudio() {
 	file, err := os.Open("/Users/weekend/Downloads/misaligned-chunk.wav")
 	if err != nil {
