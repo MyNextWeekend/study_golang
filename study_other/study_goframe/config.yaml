@@ -1,0 +1,21 @@
+# Redis 配置示例
+redis:
+  # 单实例配置示例1
+  default:
+    address: 106.55.186.222:6379
+    db: 1
+    pass: asdfgqwetdf12345
+
+#  # 单实例配置示例2
+#  cache:
+#    address:     127.0.0.1:6379
+#    db:          1
+#    pass:        123456
+#    idleTimeout: 600
+
+#数据库配置
+database:
+  default:
+    link: "mysql:study_golang:w5hYKr3bhSwT8n@tcp(106.55.186.222:3306)/study_golang"
+#  user:
+#    link: "sqlite::@file(/var/data/db.sqlite3)"
