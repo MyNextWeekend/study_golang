@@ -19,3 +19,7 @@ database:
     link: "mysql:study_golang:w5hYKr3bhSwT8n@tcp(106.55.186.222:3306)/study_golang"
 #  user:
 #    link: "sqlite::@file(/var/data/db.sqlite3)"
+
+#日志配置
+logger:
+  path: "./log/"
