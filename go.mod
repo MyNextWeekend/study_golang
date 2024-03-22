@@ -18,6 +18,7 @@ require (
 	github.com/robfig/cron v1.2.0
 	github.com/sirupsen/logrus v1.9.2
 	github.com/spf13/viper v1.15.0
+	github.com/xuri/excelize/v2 v2.8.0
 	gocv.io/x/gocv v0.33.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/mysql v1.5.1
@@ -96,7 +97,6 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/xuri/efp v0.0.0-20230802181842-ad255f2331ca // indirect
-	github.com/xuri/excelize/v2 v2.8.0 // indirect
 	github.com/xuri/nfp v0.0.0-20230819163627-dc951e3ffe1a // indirect
 	github.com/yuin/goldmark v1.4.13 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
